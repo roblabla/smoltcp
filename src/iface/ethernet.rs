@@ -57,6 +57,7 @@ use super::Routes;
 /// The network interface logically owns a number of other data structures; to avoid
 /// a dependency on heap allocation, it instead owns a `BorrowMut<[T]>`, which can be
 /// a `&mut [T]`, or `Vec<T>` if a heap is available.
+#[derive(Debug)]
 pub struct Interface<'b, 'c, 'e, DeviceT: for<'d> Device<'d>> {
     device: DeviceT,
     inner:  InterfaceInner<'b, 'c, 'e>,
@@ -69,6 +70,7 @@ pub struct Interface<'b, 'c, 'e, DeviceT: for<'d> Device<'d>> {
 /// the `device` mutably until they're used, which makes it impossible to call other
 /// methods on the `Interface` in this time (since its `device` field is borrowed
 /// exclusively). However, it is still possible to call methods on its `inner` field.
+#[derive(Debug)]
 struct InterfaceInner<'b, 'c, 'e> {
     neighbor_cache:         NeighborCache<'b>,
     ethernet_addr:          EthernetAddress,
@@ -88,6 +90,7 @@ struct InterfaceInner<'b, 'c, 'e> {
 
 /// A builder structure used for creating a Ethernet network
 /// interface.
+#[derive(Debug)]
 pub struct InterfaceBuilder <'b, 'c, 'e, DeviceT: for<'d> Device<'d>> {
     device:                 DeviceT,
     ethernet_addr:          Option<EthernetAddress>,
@@ -322,6 +325,7 @@ fn icmp_reply_payload_len(len: usize, mtu: usize, header_len: usize) -> usize {
 }
 
 #[cfg(feature = "proto-igmp")]
+#[derive(Debug)]
 enum IgmpReportState {
     Inactive,
     ToGeneralQuery {
